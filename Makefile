@@ -1,3 +1,5 @@
+delay ?= 5
+
 all: main
 
 main: main.rs
@@ -8,3 +10,17 @@ setup: /etc/debian_version
 
 run: main
 	${<D}/${<F}
+cleanall:
+	rm main
+
+test/PWR: main
+	${<D}/${<F} PWR00
+	sleep ${delay}
+	${<D}/${<F} PWR01
+	sleep ${delay}
+	${<D}/${<F} PWR00
+	sleep ${delay}
+	${<D}/${<F} PWR01
+
+
+test: test/PWR
