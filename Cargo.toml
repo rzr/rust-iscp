@@ -1,0 +1,17 @@
+[package]
+name = "rust-iscp"
+version = "0.0.0"
+authors = ["Philippe Coval <rzr@users.sf.net>"]
+edition = "2018"
+license = "Mozilla-2.0"
+repository = "https://github.com/rzr/rust-iscp"
+
+[dependencies]
+
+[lib]
+name = "iscp"
+path = "src/lib.rs"
+
+[[bin]]
+name = "iscp"
+path = "src/main.rs"
