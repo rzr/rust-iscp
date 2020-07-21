@@ -23,4 +23,15 @@ test/PWR: main
 	${<D}/${<F} PWR01
 
 
-test: test/PWR
+test: test/PWR test/MVL
+
+test/MVL/%: main
+	sleep ${delay}
+	${<D}/${<F} MVL${@F}
+	sleep ${delay}
+
+test/MVL: main
+	make test/MVL/00
+	make test/MVL/99
+	make test/MVL/42
+
