@@ -1,23 +1,35 @@
 #!/bin/make -f
 
-project?=iscp
+project = iscp
+url = https://github.com/rzr/rust-iscp
 delay ?= 1
 exe_src ?= src/main.rs
 exe ?= target/debug/${project}
-
-HOST ?= am335x-opt.local:60128
-export HOST
+host ?= am335x-opt.local
+port ?= 60128
+sudo ?= sudo
 
 all: ${exe}
 
-${exe}: cargo/build
+${exe}:
+	ls ${exe} || ${MAKE} cargo/build
+	stat $@
+
+exe: ${exe}
+	stat $<
 
 make/${exe}: ${exe}.rs
 	rustc -o $@ $<
 
 setup: /etc/debian_version
-	sudo apt-get install -y rustc 
-	sudo apt-get install -y elpa-rust-mode
+	${sudo} apt-get install -y cargo
+
+setup/devel: setup version
+	${sudo} apt-get install -y elpa-rust-mode
+
+/etc/debian_version:
+	@echo "error: Only ${@F} is supported"
+	@echo "error: Please submit ticket to ${url}"
 
 make/run: ${exe}
 	${<D}/${<F}
@@ -103,8 +115,10 @@ release:
 	${MAKE} cargo/build
 	cargo build --release
 
-run: cargo/run
-
+run: exe check cargo/run
 
 doc:
 	cargo doc --open
+
+check:
+	-ping -c 1 ${host}
