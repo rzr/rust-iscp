@@ -15,9 +15,4 @@ fn main() {
         println!("log: {}", &argument);
         send(&argument).unwrap_or_else(|err| println!("{:?}", err));
     }
-    set_on(true);
-    set_mute(true);
-    set_level(42);
-    set_input("Fm");
-    set_mute(false);
 }
