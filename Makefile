@@ -122,3 +122,28 @@ doc:
 
 check:
 	-ping -c 1 ${host}
+
+setup/debian/nix:
+	${sudo} apt-get install -y nix-bin
+	${sudo} adduser ${USER} nix-users
+	groups | grep nix-users || echo "sudo -E su -l ${USER}"
+	@echo "source /usr/share/doc/nix-bin/examples/nix-profile.sh"
+
+nix:
+	nix --version
+	nix-env --version
+	nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+	nix-channel --update
+	nix-env -iA nixpkgs.cargo
+
+flake.nix: Cargo.lock
+	nix --extra-experimental-features 'nix-command flakes' flake init -t templates#rust
+
+Cargo.lock: Cargo.toml
+	cargo update
+
+nix/run:
+	nix --extra-experimental-features 'nix-command flakes' ${@F}
+
+nix-env:
+	nix-env -iA 
