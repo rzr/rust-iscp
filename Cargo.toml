@@ -1,5 +1,5 @@
 [package]
-name = "rust-iscp"
+name = "iscp"
 version = "0.0.0"
 authors = ["Philippe Coval <rzr@users.sf.net>"]
 edition = "2018"
